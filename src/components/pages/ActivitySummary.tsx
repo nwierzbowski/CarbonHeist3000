@@ -1,3 +1,6 @@
+import { categoryColors } from "../../data/categories";
+import ProgressBar from "../activities/ProgressBar";
+
 export default function ActivitySummary() {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -5,7 +8,14 @@ export default function ActivitySummary() {
         Here you can view a summary of your activities and their impact on the
         environment.
       </p>
-      {/* Add additional summary details here */}
+      {categoryColors.map((color) => (
+        <ProgressBar
+          key={color.colorClass}
+          value={4}
+          max={10}
+          color={color.colorClass}
+        ></ProgressBar>
+      ))}
     </div>
   );
 }
