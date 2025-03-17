@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Header from "../general/Header";
 import { resources } from "../../data/resources";
+import Card from "../general/Card";
+import Title from "../general/Title";
 
 export default function Resources() {
   const [search, setSearch] = useState("");
@@ -30,13 +32,8 @@ export default function Resources() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredResources.length > 0 ? (
           filteredResources.map((resource) => (
-            <div
-              key={resource.id}
-              className="p-4 bg-white border border-gray-200 rounded-md shadow hover:shadow-lg transition"
-            >
-              <h2 className="text-lg font-semibold text-green-700 mb-2">
-                {resource.title}
-              </h2>
+            <Card key={resource.id}>
+              <Title>{resource.title}</Title>
               <p className="text-gray-600 mb-4">{resource.description}</p>
               <a
                 href={resource.link}
@@ -46,7 +43,7 @@ export default function Resources() {
               >
                 Learn More
               </a>
-            </div>
+            </Card>
           ))
         ) : (
           <p className="text-gray-500 col-span-full">
