@@ -13,10 +13,10 @@ export default function ProgressBar({ value, max, color, children }: Props) {
   const widthPercentage = (progress / max) * 100;
 
   return (
-    <div className="w-full bg-gray-300 rounded-md overflow-hidden">
+    <div className="w-full bg-gray-600 rounded-md overflow-hidden m-1">
       
       <div
-        className={" h-6 transition-all duration-300 " + color}
+        className={"whitespace-nowrap m-1 h-6 transition-all duration-300 text-white font-bold " + color}
         style={{ width: `${widthPercentage}%` }}
       >{children}</div>
     </div>
