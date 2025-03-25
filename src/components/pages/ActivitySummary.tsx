@@ -4,7 +4,6 @@ import { categoryColors, getCategoryColorClass } from "../../data/categories";
 import ProgressBar from "../activities/ProgressBar";
 
 // Function to calculate carbon values by category
-// Function to calculate carbon values by category
 export function calculateCarbonByCategory(
   options: Activity[],
   allCategories: string[]

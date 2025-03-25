@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { Activity } from "../data/activities";
 
 // Define the context value shape
@@ -9,9 +9,7 @@ interface ActivityContextType {
 }
 
 // Create the context
-const ActivityContext = createContext<ActivityContextType | undefined>(
-  undefined
-);
+const ActivityContext = createContext<ActivityContextType | undefined>(undefined);
 
 // Provider Component
 interface ActivityProviderProps {
@@ -19,22 +17,29 @@ interface ActivityProviderProps {
 }
 
 export const ActivityProvider = ({ children }: ActivityProviderProps) => {
-  const [activities, setActivities] = useState<Activity[]>([]);
+  // Initialize activities from localStorage or default to an empty array
+  const [activities, setActivities] = useState<Activity[]>(() => {
+    const storedActivities = localStorage.getItem("activities");
+    return storedActivities ? JSON.parse(storedActivities) : [];
+  });
+
+  // Save activities to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("activities", JSON.stringify(activities));
+  }, [activities]);
 
   // Add an activity
   const addActivity = (activity: Activity) => {
-    setActivities([...activities, activity]);
+    setActivities((prev) => [...prev, activity]);
   };
 
-  // Remove an activity by its description
+  // Remove an activity by its index
   const removeActivity = (i: number) => {
-    setActivities(activities.filter((_activity, idx) => idx !== i));
+    setActivities((prev) => prev.filter((_activity, idx) => idx !== i));
   };
 
   return (
-    <ActivityContext.Provider
-      value={{ activities, addActivity, removeActivity }}
-    >
+    <ActivityContext.Provider value={{ activities, addActivity, removeActivity }}>
       {children}
     </ActivityContext.Provider>
   );
