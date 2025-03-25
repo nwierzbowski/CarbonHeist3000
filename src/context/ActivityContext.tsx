@@ -1,11 +1,21 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { Activity } from "../data/activities";
+
+// Define the updated Activity interface to include a date field
+export interface Activity {
+  description: string;
+  category: string;
+  carbon_value: string;
+  unit: string;
+  date: string; // Date field for tracking activity date
+}
 
 // Define the context value shape
 interface ActivityContextType {
   activities: Activity[];
-  addActivity: (activity: Activity) => void;
+  addActivity: (activity: Activity, date: string) => void; // Accepts a date parameter
   removeActivity: (i: number) => void;
+  selectedDate: string; // Tracks the currently selected date
+  setSelectedDate: (date: string) => void; // Function to update the selected date
 }
 
 // Create the context
@@ -28,9 +38,13 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
     localStorage.setItem("activities", JSON.stringify(activities));
   }, [activities]);
 
-  // Add an activity
-  const addActivity = (activity: Activity) => {
-    setActivities((prev) => [...prev, activity]);
+  // Add an activity with a specified date
+  const addActivity = (activity: Activity, date: string) => {
+    const newActivity = {
+      ...activity,
+      date, // Use the provided date
+    };
+    setActivities((prev) => [...prev, newActivity]);
   };
 
   // Remove an activity by its index
@@ -38,8 +52,22 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
     setActivities((prev) => prev.filter((_activity, idx) => idx !== i));
   };
 
+  // Selected date state
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    const today = new Date().toISOString().split("T")[0]; // Default to today's date
+    return today;
+  });
+
   return (
-    <ActivityContext.Provider value={{ activities, addActivity, removeActivity }}>
+    <ActivityContext.Provider
+      value={{
+        activities,
+        addActivity,
+        removeActivity,
+        selectedDate,
+        setSelectedDate, // Provide setter for selected date
+      }}
+    >
       {children}
     </ActivityContext.Provider>
   );
