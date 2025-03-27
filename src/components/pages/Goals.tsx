@@ -1,35 +1,18 @@
 import React from "react";
-import { useActivityContext } from "../../context/ActivityContext";
+// import { useActivityContext } from "../../context/ActivityContext";
 import { useGoalContext } from "../../context/GoalContext"; // Import GoalContext
-import { calculateCarbonByCategory } from "../dashboard/ActivitySummary"; // Assuming this is imported correctly
+// import { calculateCarbonByCategory } from "../dashboard/ActivitySummary"; // Assuming this is imported correctly
 import { categoryColors } from "../../data/categories"; // Assuming category colors are defined here
 
 const categories = categoryColors.map((val) => val.category); // Generate categories dynamically
 
 export const Goals: React.FC = () => {
-  const { activities, selectedDate } = useActivityContext();
+//   const { activities, selectedDate } = useActivityContext();
   const { categoryGoals, overallGoal, setCategoryGoal, setOverallGoal } = useGoalContext(); // Use GoalContext
 
   // Calculate progress dynamically
-  const progressByCategory = calculateCarbonByCategory(activities, categories, selectedDate);
-  const overallProgress = Object.values(progressByCategory).reduce((sum, value) => sum + value, 0);
-
-  // Generate feedback dynamically
-  const getMotivationalFeedback = () => {
-    if (overallProgress >= overallGoal && overallGoal > 0) {
-      return "Congratulations! You've achieved your overall goal for today. Keep it up! 🎉";
-    } else if (overallProgress > overallGoal * 0.75) {
-      return "You're so close to reaching your daily goal! Great work! 🌟";
-    } else if (overallProgress > overallGoal * 0.5) {
-      return "Halfway there! Keep making progress. 💪";
-    } else if (overallProgress > overallGoal * 0.25) {
-      return "Good start! Stay consistent, and you'll reach your goal. 🌱";
-    } else {
-      return "Every effort counts! Let's keep going! 🌍";
-    }
-  };
-
-  const feedback = getMotivationalFeedback();
+//   const progressByCategory = calculateCarbonByCategory(activities, categories, selectedDate);
+//   const overallProgress = Object.values(progressByCategory).reduce((sum, value) => sum + value, 0);
 
   return (
     <div className="max-w-lg mx-auto p-4 border rounded-md shadow-lg">
@@ -65,12 +48,7 @@ export const Goals: React.FC = () => {
         />
       </div>
 
-      {/* Motivational Feedback */}
-      {feedback && (
-        <p className="mt-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
-          {feedback}
-        </p>
-      )}
+      
     </div>
   );
 };
