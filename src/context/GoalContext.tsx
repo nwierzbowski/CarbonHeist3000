@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 // Define the structure for category goals
 export interface CategoryGoals {
@@ -22,9 +22,26 @@ interface GoalProviderProps {
 }
 
 export const GoalProvider = ({ children }: GoalProviderProps) => {
-  // State to store goals
-  const [categoryGoals, setCategoryGoals] = useState<CategoryGoals>({});
-  const [overallGoal, setOverallGoal] = useState<number>(0);
+  // Retrieve initial goals from localStorage or initialize with empty values
+  const [categoryGoals, setCategoryGoals] = useState<CategoryGoals>(() => {
+    const storedCategoryGoals = localStorage.getItem("categoryGoals");
+    return storedCategoryGoals ? JSON.parse(storedCategoryGoals) : {};
+  });
+
+  const [overallGoal, setOverallGoal] = useState<number>(() => {
+    const storedOverallGoal = localStorage.getItem("overallGoal");
+    return storedOverallGoal ? Number(storedOverallGoal) : 0;
+  });
+
+  // Save category goals to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("categoryGoals", JSON.stringify(categoryGoals));
+  }, [categoryGoals]);
+
+  // Save overall goal to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("overallGoal", overallGoal.toString());
+  }, [overallGoal]);
 
   // Function to update a specific category goal
   const setCategoryGoal = (category: string, goal: number) => {

@@ -1,4 +1,5 @@
 import { ActivityItem, useActivityContext } from "../../context/ActivityContext";
+import { useGoalContext } from "../../context/GoalContext"; // Import GoalContext
 import { categoryColors, getCategoryColorClass } from "../../data/categories";
 import ProgressBar from "./ProgressBar";
 
@@ -31,8 +32,11 @@ export function calculateCarbonByCategory(
 
 export default function ActivitySummary() {
   const { activities, selectedDate } = useActivityContext();
+  const { categoryGoals } = useGoalContext(); // Use GoalContext for category goals
 
-  const summary = Object.entries(calculateCarbonByCategory(activities, categoryColors.map(item => item.category), selectedDate));
+  const summary = Object.entries(
+    calculateCarbonByCategory(activities, categoryColors.map((item) => item.category), selectedDate)
+  );
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -44,7 +48,7 @@ export default function ActivitySummary() {
         <ProgressBar
           key={category}
           value={carbonValue}
-          max={10} // Adjust max based on your data scale
+          max={categoryGoals[category] || 0} // Set max to the goal for the category, default to 0 if not set
           color={getCategoryColorClass(category)}
         >
           {category}
