@@ -103,21 +103,40 @@ export const CarbonFootprintDashboard: React.FC = () => {
       fill: false,
     };
   
-    // Pie chart data for the selected date
+    // Pie chart data (aggregated by category for the selected date)
     const selectedDateActivities = activities[selectedDate] || [];
     const pieData = selectedDateActivities.reduce(
       (acc, activity) => {
         const category = activity.category;
         const carbonValue = parseFloat(activity.carbon_value) * activity.amount;
+  
         if (!isNaN(carbonValue)) {
-          acc.labels.push(category);
-          acc.data.push(carbonValue);
-          acc.colors.push(colorMap[category]);
+          if (!acc.categories[category]) {
+            acc.categories[category] = 0;
+            acc.colors.push(colorMap[category]);
+            acc.labels.push(category);
+          }
+          acc.categories[category] += carbonValue;
         }
+  
         return acc;
       },
-      { labels: [], data: [], colors: [] } as { labels: string[]; data: number[]; colors: string[] }
+      {
+        categories: {} as Record<string, number>,
+        labels: [] as string[],
+        colors: [] as string[],
+      }
     );
+  
+    const pieChartData = {
+      labels: pieData.labels,
+      datasets: [
+        {
+          data: pieData.labels.map((label) => pieData.categories[label]),
+          backgroundColor: pieData.colors,
+        },
+      ],
+    };
   
     return (
       <div className="p-4 bg-white shadow-lg rounded-lg grid grid-cols-2 gap-10">
@@ -139,19 +158,11 @@ export const CarbonFootprintDashboard: React.FC = () => {
             }}
           />
         </div>
-
+  
         <div className="h-[40vh]">
           <h2 className="text-xl font-semibold mb-4">Category Distribution (Selected Date)</h2>
           <Pie
-            data={{
-              labels: pieData.labels,
-              datasets: [
-                {
-                  data: pieData.data,
-                  backgroundColor: pieData.colors,
-                },
-              ],
-            }}
+            data={pieChartData}
             options={{
               responsive: true,
               maintainAspectRatio: true,
@@ -180,8 +191,6 @@ export const CarbonFootprintDashboard: React.FC = () => {
             }}
           />
         </div>
-  
-        
   
         <div className="h-[400px] overflow-hidden">
           <h2 className="text-xl font-semibold mb-4">Summary View</h2>
