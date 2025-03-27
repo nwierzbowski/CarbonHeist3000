@@ -1,7 +1,7 @@
 import { useActivityContext } from "../../context/ActivityContext";
 import { Activity } from "../../data/activities";
 import { categoryColors, getCategoryColorClass } from "../../data/categories";
-import ProgressBar from "../activities/ProgressBar";
+import ProgressBar from "./ProgressBar";
 
 // Function to calculate carbon values by category
 export function calculateCarbonByCategory(

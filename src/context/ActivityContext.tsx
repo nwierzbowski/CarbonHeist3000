@@ -45,8 +45,7 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
       if (!updatedActivities[date]) {
         updatedActivities[date] = []; // Initialize the array if the date doesn't exist
       }
-      updatedActivities[date][index] = activity;
- // Add the activity to the specified date
+      updatedActivities[date][index] = activity; // Add the activity to the specified date
       return updatedActivities;
     });
   };

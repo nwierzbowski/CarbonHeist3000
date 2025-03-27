@@ -2,13 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Resources from "./components/pages/Resources";
 import Navbar from "./components/navbar/Navbar";
 import { ActivityProvider } from "./context/ActivityContext";
-import ActivityManager from "./components/pages/ActivityManager";
 import { ReactNode } from "react";
+import Dashboard from "./components/pages/Dashboard";
 
 export type Nav = { link: string; name: string; page: ReactNode };
 
 const directory = [
-  { link: "/", name: "Activity Manager", page: <ActivityManager /> },
+  { link: "/", name: "Dashboard", page: <Dashboard /> },
   { link: "/resources", name: "Resources", page: <Resources /> },
 ];
 
