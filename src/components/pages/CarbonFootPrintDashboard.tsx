@@ -15,6 +15,7 @@ import { ActivityItem, useActivityContext } from "../../context/ActivityContext"
 import { useGoalContext } from "../../context/GoalContext";
 import { categoryColors} from "../../data/categories"; // Import category colors and helper function
 import Header from "../general/Header";
+import PageTitle from "../general/Title";
 
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
@@ -154,7 +155,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-10 md:gap-10">
           {/* Category Trends */}
           <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-            <h2 className="text-xl font-semibold mb-4">Category Trends</h2>
+            <PageTitle>Category Trends</PageTitle>
             <Line
               data={{
                 labels: dates,
@@ -173,7 +174,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
   
           {/* Category Distribution */}
           <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-            <h2 className="text-xl font-semibold mb-4">Category Distribution (Selected Date)</h2>
+            <PageTitle>Daily Category Distribution</PageTitle>
             <Pie
               data={pieChartData}
               options={{
@@ -189,7 +190,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
   
           {/* Overall Trend */}
           <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-            <h2 className="text-xl font-semibold mb-4">Overall Trend</h2>
+            <PageTitle>Overall Trend</PageTitle>
             <Line
               data={{
                 labels: dates,
@@ -208,7 +209,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
   
           {/* Summary View */}
           <div className="h-[50vh] md:h-[40vh] lg:h-[30vh] overflow-auto">
-            <h2 className="text-xl font-semibold mb-4">Summary View</h2>
+            <PageTitle>Summary View</PageTitle>
             <div className="text-gray-700">
               <p>
                 <strong>Total Dates Tracked:</strong> {dates.length}
