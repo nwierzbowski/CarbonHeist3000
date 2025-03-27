@@ -10,20 +10,20 @@ export const options = [
   {
     description: "Morning jog",
     category: "Physical Activity",
-    carbon_value: "0.05",
-    unit: "per 30 minutes",
+    carbon_value: "0.0017", // 0.05 / 30
+    unit: "per minute",
   },
   {
     description: "Driving to work",
     category: "Transportation",
-    carbon_value: "2.8",
-    unit: "per 10 miles",
+    carbon_value: "0.28", // 2.8 / 10
+    unit: "per mile",
   },
   {
     description: "Taking a bus to the store",
     category: "Transportation",
-    carbon_value: "0.5",
-    unit: "per 10 miles",
+    carbon_value: "0.05", // 0.5 / 10
+    unit: "per mile",
   },
   {
     description: "Grocery shopping",
@@ -46,8 +46,8 @@ export const options = [
   {
     description: "Taking a shower",
     category: "Personal Care",
-    carbon_value: "0.2",
-    unit: "per 5 minutes",
+    carbon_value: "0.04", // 0.2 / 5
+    unit: "per minute",
   },
   {
     description: "Watching TV",
@@ -58,8 +58,8 @@ export const options = [
   {
     description: "Cycling to work",
     category: "Transportation",
-    carbon_value: "0.1",
-    unit: "per 10 miles",
+    carbon_value: "0.01", // 0.1 / 10
+    unit: "per mile",
   },
   {
     description: "Reading a book",
@@ -112,8 +112,8 @@ export const options = [
   {
     description: "Commuting by train",
     category: "Transportation",
-    carbon_value: "0.3",
-    unit: "per 10 miles",
+    carbon_value: "0.03", // 0.3 / 10
+    unit: "per mile",
   },
   {
     description: "Reading the news on a tablet",
@@ -130,20 +130,20 @@ export const options = [
   {
     description: "Walking the dog",
     category: "Physical Activity",
-    carbon_value: "0.1",
-    unit: "per 30 minutes",
+    carbon_value: "0.0033", // 0.1 / 30
+    unit: "per minute",
   },
   {
     description: "Carpooling with a friend",
     category: "Transportation",
-    carbon_value: "1.5",
-    unit: "per 10 miles",
+    carbon_value: "0.15", // 1.5 / 10
+    unit: "per mile",
   },
   {
     description: "Running errands by bike",
     category: "Transportation",
-    carbon_value: "0.1",
-    unit: "per 10 miles",
+    carbon_value: "0.01", // 0.1 / 10
+    unit: "per mile",
   },
   {
     description: "Watching a movie at home",

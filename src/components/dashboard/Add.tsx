@@ -1,8 +1,7 @@
-import { useActivityContext } from "../../context/ActivityContext";
-import { Activity } from "../../data/activities";
+import { ActivityItem, useActivityContext } from "../../context/ActivityContext";
 
 interface Props {
-  newActivity: Activity;
+  newActivity: ActivityItem;
   onClick: () => void;
   children?: React.ReactNode;
 }

@@ -1,18 +1,16 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Activity } from "../data/activities";
 
-// Define the updated Activity interface
-export interface Activity {
-  description: string;
-  category: string;
-  carbon_value: string;
-  unit: string;
+export interface ActivityItem extends Activity {
+  amount: number;
 }
 
 // Define the context value shape
 interface ActivityContextType {
-  activities: Record<string, Activity[]>; // Keys are dates, values are arrays of activities
-  addActivity: (activity: Activity, date: string) => void; // Accepts a date parameter
+  activities: Record<string, ActivityItem[]>; // Keys are dates, values are arrays of activities
+  addActivity: (activity: ActivityItem, date: string) => void; // Accepts a date parameter
   removeActivity: (date: string, index: number) => void; // Remove activity by date and index
+  updateAmount: (date: string, index: number, newAmount: number) => void; // Updates the amount property
   selectedDate: string; // Tracks the currently selected date
   setSelectedDate: (date: string) => void; // Function to update the selected date
 }
@@ -27,7 +25,7 @@ interface ActivityProviderProps {
 
 export const ActivityProvider = ({ children }: ActivityProviderProps) => {
   // Initialize activities as an object with dates as keys and arrays of activities as values
-  const [activities, setActivities] = useState<Record<string, Activity[]>>(() => {
+  const [activities, setActivities] = useState<Record<string, ActivityItem[]>>(() => {
     const storedActivities = localStorage.getItem("activities");
     return storedActivities ? JSON.parse(storedActivities) : {};
   });
@@ -38,7 +36,7 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
   }, [activities]);
 
   // Add an activity to a specific date
-  const addActivity = (activity: Activity, date: string) => {
+  const addActivity = (activity: ActivityItem, date: string) => {
     const index = activities[date]?.length || 0; // Get the current length of the array
     setActivities((prev) => {
       const updatedActivities = { ...prev };
@@ -65,6 +63,20 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
     });
   };
 
+  // Update the amount of a specific activity
+  const updateAmount = (date: string, index: number, newAmount: number) => {
+    setActivities((prev) => {
+      const updatedActivities = { ...prev };
+      if (updatedActivities[date] && updatedActivities[date][index]) {
+        updatedActivities[date][index] = {
+          ...updatedActivities[date][index],
+          amount: newAmount, // Update the amount property
+        };
+      }
+      return updatedActivities;
+    });
+  };
+
   // Selected date state
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date().toISOString().split("T")[0]; // Default to today's date
@@ -77,6 +89,7 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
         activities,
         addActivity,
         removeActivity,
+        updateAmount,
         selectedDate,
         setSelectedDate,
       }}

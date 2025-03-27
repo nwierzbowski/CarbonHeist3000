@@ -17,6 +17,7 @@ export default function DropdownSearch({ options }: Props) {
     category: "",
     carbon_value: "",
     unit: "",
+    amount: 1,
   });
 
   // Close dropdown if clicking outside
@@ -58,12 +59,13 @@ export default function DropdownSearch({ options }: Props) {
           <div className="absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto">
             {filteredActivities.length > 0 ? (
               filteredActivities.map((op, index) => (
+                
                 <div
                   key={index}
                   onClick={() => {
                     setSearch(op.description);
                     setIsOpen(false);
-                    setNewActivity(op);
+                    setNewActivity({ ...op, amount: 1 });
                   }}
                   className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                 >

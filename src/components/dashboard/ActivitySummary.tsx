@@ -1,11 +1,10 @@
-import { useActivityContext } from "../../context/ActivityContext";
-import { Activity } from "../../data/activities";
+import { ActivityItem, useActivityContext } from "../../context/ActivityContext";
 import { categoryColors, getCategoryColorClass } from "../../data/categories";
 import ProgressBar from "./ProgressBar";
 
 // Function to calculate carbon values by category
 export function calculateCarbonByCategory(
-  options: Record<string, Activity[]>, // Updated type to reflect the new structure
+  options: Record<string, ActivityItem[]>, // Updated type to reflect the new structure
   allCategories: string[]
 ): Record<string, number> {
   // Initialize the summary object with all categories set to 0
@@ -19,7 +18,7 @@ export function calculateCarbonByCategory(
     const activities = options[date]; // Get activities for the given date
     activities.forEach((activity) => {
       const category = activity.category;
-      const carbonValue = parseFloat(activity.carbon_value);
+      const carbonValue = parseFloat(activity.carbon_value) * activity.amount; // Calculate the total carbon value
       if (!isNaN(carbonValue)) {
         summary[category] += carbonValue; // Add the carbon value to the corresponding category
       }

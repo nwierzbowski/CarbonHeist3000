@@ -2,8 +2,15 @@ import { useActivityContext } from "../../context/ActivityContext";
 import Title from "../general/Title";
 
 export default function ActivityLog() {
-  const { activities, removeActivity } = useActivityContext();
-  const { selectedDate } = useActivityContext();
+  const { activities, removeActivity, updateAmount, selectedDate } = useActivityContext();
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const newAmount = parseInt(e.target.value, 10); // Convert input value to a number
+    if (!isNaN(newAmount) && newAmount > 0) {
+      updateAmount(selectedDate, index, newAmount); // Call the context method to update the amount
+    }
+  };
+
   return (
     <table className="mb-4 table-auto">
       <thead>
@@ -16,6 +23,9 @@ export default function ActivityLog() {
           </th>
           <th className="px-2">
             <Title>Carbon Value</Title>
+          </th>
+          <th className="px-2">
+            <Title>Amount</Title>
           </th>
           <th className="px-2">
             <Title>Unit</Title>
@@ -31,6 +41,15 @@ export default function ActivityLog() {
             <td className="px-2">{activity.description}</td>
             <td className="px-2">{activity.category}</td>
             <td className="px-2">{activity.carbon_value}</td>
+            <td className="px-2">
+              <input
+                type="number"
+                min="1"
+                value={activity.amount}
+                onChange={(e) => handleAmountChange(e, i)} // Update amount on change
+                className="w-16 p-1 border rounded-md"
+              />
+            </td>
             <td className="px-2">{activity.unit}</td>
             <td className="py-1">
               <button
