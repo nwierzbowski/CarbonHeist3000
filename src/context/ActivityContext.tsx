@@ -1,19 +1,18 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-// Define the updated Activity interface to include a date field
+// Define the updated Activity interface
 export interface Activity {
   description: string;
   category: string;
   carbon_value: string;
   unit: string;
-  date: string; // Date field for tracking activity date
 }
 
 // Define the context value shape
 interface ActivityContextType {
-  activities: Activity[];
+  activities: Record<string, Activity[]>; // Keys are dates, values are arrays of activities
   addActivity: (activity: Activity, date: string) => void; // Accepts a date parameter
-  removeActivity: (i: number) => void;
+  removeActivity: (date: string, index: number) => void; // Remove activity by date and index
   selectedDate: string; // Tracks the currently selected date
   setSelectedDate: (date: string) => void; // Function to update the selected date
 }
@@ -27,10 +26,10 @@ interface ActivityProviderProps {
 }
 
 export const ActivityProvider = ({ children }: ActivityProviderProps) => {
-  // Initialize activities from localStorage or default to an empty array
-  const [activities, setActivities] = useState<Activity[]>(() => {
+  // Initialize activities as an object with dates as keys and arrays of activities as values
+  const [activities, setActivities] = useState<Record<string, Activity[]>>(() => {
     const storedActivities = localStorage.getItem("activities");
-    return storedActivities ? JSON.parse(storedActivities) : [];
+    return storedActivities ? JSON.parse(storedActivities) : {};
   });
 
   // Save activities to localStorage whenever they change
@@ -38,18 +37,33 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
     localStorage.setItem("activities", JSON.stringify(activities));
   }, [activities]);
 
-  // Add an activity with a specified date
+  // Add an activity to a specific date
   const addActivity = (activity: Activity, date: string) => {
-    const newActivity = {
-      ...activity,
-      date, // Use the provided date
-    };
-    setActivities((prev) => [...prev, newActivity]);
+    const index = activities[date]?.length || 0; // Get the current length of the array
+    setActivities((prev) => {
+      const updatedActivities = { ...prev };
+      if (!updatedActivities[date]) {
+        updatedActivities[date] = []; // Initialize the array if the date doesn't exist
+      }
+      updatedActivities[date][index] = activity;
+ // Add the activity to the specified date
+      return updatedActivities;
+    });
   };
 
-  // Remove an activity by its index
-  const removeActivity = (i: number) => {
-    setActivities((prev) => prev.filter((_activity, idx) => idx !== i));
+  // Remove an activity from a specific date by index
+  const removeActivity = (date: string, index: number) => {
+    setActivities((prev) => {
+      const updatedActivities = { ...prev };
+      if (updatedActivities[date]) {
+        updatedActivities[date] = updatedActivities[date].filter((_activity, idx) => idx !== index);
+        // Clean up empty arrays (optional)
+        if (updatedActivities[date].length === 0) {
+          delete updatedActivities[date];
+        }
+      }
+      return updatedActivities;
+    });
   };
 
   // Selected date state
@@ -65,7 +79,7 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
         addActivity,
         removeActivity,
         selectedDate,
-        setSelectedDate, // Provide setter for selected date
+        setSelectedDate,
       }}
     >
       {children}
@@ -77,9 +91,7 @@ export const ActivityProvider = ({ children }: ActivityProviderProps) => {
 export const useActivityContext = () => {
   const context = useContext(ActivityContext);
   if (!context) {
-    throw new Error(
-      "useActivityContext must be used within an ActivityProvider"
-    );
+    throw new Error("useActivityContext must be used within an ActivityProvider");
   }
   return context;
 };

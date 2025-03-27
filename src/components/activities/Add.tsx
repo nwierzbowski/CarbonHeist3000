@@ -9,9 +9,10 @@ interface Props {
 
 export default function Add({ newActivity, onClick, children }: Props) {
   const { addActivity } = useActivityContext();
+  const { selectedDate } = useActivityContext();
   const handleAddActivity = () => {
     if (newActivity.description.trim()) {
-      addActivity(newActivity);
+      addActivity(newActivity, selectedDate);
       onClick(); // Close the dropdown after adding the activity
     }
   };

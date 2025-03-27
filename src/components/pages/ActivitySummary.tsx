@@ -5,7 +5,7 @@ import ProgressBar from "../activities/ProgressBar";
 
 // Function to calculate carbon values by category
 export function calculateCarbonByCategory(
-  options: Activity[],
+  options: Record<string, Activity[]>, // Updated type to reflect the new structure
   allCategories: string[]
 ): Record<string, number> {
   // Initialize the summary object with all categories set to 0
@@ -14,11 +14,16 @@ export function calculateCarbonByCategory(
     return accumulator;
   }, {} as Record<string, number>);
 
-  // Sum the carbon values for categories present in the activities
-  options.forEach((activity) => {
-    const category = activity.category;
-    const carbonValue = parseFloat(activity.carbon_value);
-    summary[category] += carbonValue;
+  // Iterate over each date (key) and its array of activities
+  Object.keys(options).forEach((date) => {
+    const activities = options[date]; // Get activities for the given date
+    activities.forEach((activity) => {
+      const category = activity.category;
+      const carbonValue = parseFloat(activity.carbon_value);
+      if (!isNaN(carbonValue)) {
+        summary[category] += carbonValue; // Add the carbon value to the corresponding category
+      }
+    });
   });
 
   return summary;

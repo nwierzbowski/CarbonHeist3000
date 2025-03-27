@@ -3,6 +3,7 @@ import Title from "../general/Title";
 
 export default function ActivityLog() {
   const { activities, removeActivity } = useActivityContext();
+  const { selectedDate } = useActivityContext();
   return (
     <table className="mb-4 table-auto">
       <thead>
@@ -25,7 +26,7 @@ export default function ActivityLog() {
         </tr>
       </thead>
       <tbody>
-        {activities.map((activity, i) => (
+        {activities[selectedDate]?.map((activity, i) => (
           <tr key={i}>
             <td className="px-2">{activity.description}</td>
             <td className="px-2">{activity.category}</td>
@@ -33,7 +34,7 @@ export default function ActivityLog() {
             <td className="px-2">{activity.unit}</td>
             <td className="py-1">
               <button
-                onClick={() => removeActivity(i)}
+                onClick={() => removeActivity(selectedDate, i)}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
                 Remove
