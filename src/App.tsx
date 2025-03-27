@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 import Dashboard from "./components/pages/Dashboard";
 import { Goals } from "./components/pages/Goals";
 import { GoalProvider } from "./context/GoalContext";
-import { CarbonFootprintDashboard } from "./components/pages/CarbonFootPrintDashboard";
+import { Charts } from "./components/pages/Charts";
 import React from "react";
 
 // 404 Page Component
@@ -24,7 +24,7 @@ export type Nav = { link: string; name: string; page: ReactNode };
 
 const directory = [
   { link: "/", name: "Dashboard", page: <Dashboard /> },
-  { link: "/charts", name: "Charts", page: <CarbonFootprintDashboard /> },
+  { link: "/charts", name: "Charts", page: <Charts /> },
   { link: "/resources", name: "Resources", page: <Resources /> },
   { link: "/goals", name: "Set Goals", page: <Goals /> },
 ];

@@ -63,7 +63,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
   };
   
 
-  export const CarbonFootprintDashboard: React.FC = () => {
+  export const Charts: React.FC = () => {
     const { activities, selectedDate } = useActivityContext();
     const { categoryGoals } = useGoalContext();
   
