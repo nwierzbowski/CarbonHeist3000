@@ -61,7 +61,7 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
   };
   
 
-export const CarbonFootprintDashboard: React.FC = () => {
+  export const CarbonFootprintDashboard: React.FC = () => {
     const { activities, selectedDate } = useActivityContext();
     const { categoryGoals } = useGoalContext();
   
@@ -142,9 +142,9 @@ export const CarbonFootprintDashboard: React.FC = () => {
     };
   
     return (
-      <div className="p-4 bg-white shadow-lg rounded-lg grid grid-cols-2 gap-10">
-        {/* Ensure consistent height for all charts */}
-        <div className="h-[40vh]">
+      <div className="p-4 bg-white shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-10 md:gap-10">
+        {/* Responsive Chart Heights */}
+        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
           <h2 className="text-xl font-semibold mb-4">Category Trends</h2>
           <Line
             data={{
@@ -153,7 +153,7 @@ export const CarbonFootprintDashboard: React.FC = () => {
             }}
             options={{
               responsive: true,
-              maintainAspectRatio: true,
+              maintainAspectRatio: false,
               plugins: {
                 legend: { position: "top" },
                 title: { display: true, text: "Carbon Footprint by Category Over Time" },
@@ -162,13 +162,13 @@ export const CarbonFootprintDashboard: React.FC = () => {
           />
         </div>
   
-        <div className="h-[40vh]">
+        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
           <h2 className="text-xl font-semibold mb-4">Category Distribution (Selected Date)</h2>
           <Pie
             data={pieChartData}
             options={{
               responsive: true,
-              maintainAspectRatio: true,
+              maintainAspectRatio: false,
               plugins: {
                 legend: { position: "top" },
                 title: { display: true, text: `Carbon Footprint Distribution for ${selectedDate}` },
@@ -177,7 +177,7 @@ export const CarbonFootprintDashboard: React.FC = () => {
           />
         </div>
   
-        <div className="h-[40vh]">
+        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
           <h2 className="text-xl font-semibold mb-4">Overall Trend</h2>
           <Line
             data={{
@@ -186,7 +186,7 @@ export const CarbonFootprintDashboard: React.FC = () => {
             }}
             options={{
               responsive: true,
-              maintainAspectRatio: true,
+              maintainAspectRatio: false,
               plugins: {
                 legend: { position: "top" },
                 title: { display: true, text: "Overall Carbon Footprint Over Time" },
@@ -195,7 +195,7 @@ export const CarbonFootprintDashboard: React.FC = () => {
           />
         </div>
   
-        <div className="h-[400px] overflow-hidden">
+        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh] overflow-auto">
           <h2 className="text-xl font-semibold mb-4">Summary View</h2>
           <div className="text-gray-700">
             <p>
@@ -212,4 +212,3 @@ export const CarbonFootprintDashboard: React.FC = () => {
       </div>
     );
   };
-  

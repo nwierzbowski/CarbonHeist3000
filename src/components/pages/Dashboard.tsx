@@ -1,7 +1,6 @@
 import { options } from "../../data/activities";
 import ActivityLog from "../dashboard/ActivityLog";
 import DropdownSearch from "../dashboard/DropdownSearch";
-import DateSelector from "../DateSelector";
 import Header from "../general/Header";
 import ActivitySummary from "../dashboard/ActivitySummary";
 
