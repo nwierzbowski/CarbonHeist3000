@@ -1,54 +1,53 @@
 import React from "react";
-// import { useActivityContext } from "../../context/ActivityContext";
 import { useGoalContext } from "../../context/GoalContext"; // Import GoalContext
-// import { calculateCarbonByCategory } from "../dashboard/ActivitySummary"; // Assuming this is imported correctly
 import { categoryColors } from "../../data/categories"; // Assuming category colors are defined here
+import Header from "../general/Header";
+import Card from "../general/Card";
+import Title from "../general/Title";
 
 const categories = categoryColors.map((val) => val.category); // Generate categories dynamically
 
 export const Goals: React.FC = () => {
-//   const { activities, selectedDate } = useActivityContext();
   const { categoryGoals, overallGoal, setCategoryGoal, setOverallGoal } = useGoalContext(); // Use GoalContext
 
-  // Calculate progress dynamically
-//   const progressByCategory = calculateCarbonByCategory(activities, categories, selectedDate);
-//   const overallProgress = Object.values(progressByCategory).reduce((sum, value) => sum + value, 0);
-
   return (
-    <div className="max-w-lg mx-auto p-4 border rounded-md shadow-lg">
-      <h1 className="text-2xl font-bold mb-4">Set Your Daily Carbon Goals</h1>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      {/* Header */}
+      <Header>Set Your Daily Carbon Goals</Header>
 
-      {/* Set Goals */}
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">Category Goals</h2>
+      <p className="text-gray-700 mb-6">
+        Define your goals to reduce your carbon footprint across different categories and track your progress.
+      </p>
+
+      {/* Category Goals */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
-          <div key={category} className="mb-2 flex justify-between items-center">
-            <label className="font-medium">{category}</label>
+          <Card key={category}>
+            <Title>{category}</Title>
             <input
               type="number"
               min="0"
               value={categoryGoals[category] || 0} // Default to 0 if not set
               onChange={(e) => setCategoryGoal(category, Number(e.target.value))} // Update goal using context
-              className="w-24 p-1 border rounded-md"
-              placeholder="e.g., 5"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-300"
+              placeholder={`Set goal for ${category}`}
             />
-          </div>
+          </Card>
         ))}
       </div>
 
-      <div className="mb-4">
+      {/* Overall Goal */}
+      <div className="mt-6">
         <h2 className="text-xl font-semibold mb-2">Overall Goal</h2>
         <input
           type="number"
           min="0"
           value={overallGoal} // Access overall goal from context
           onChange={(e) => setOverallGoal(Number(e.target.value))} // Update overall goal using context
-          className="w-full p-2 border rounded-md"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-300"
           placeholder="Set your overall daily goal (e.g., 20 kg CO₂)"
         />
       </div>
-
-      
     </div>
   );
 };

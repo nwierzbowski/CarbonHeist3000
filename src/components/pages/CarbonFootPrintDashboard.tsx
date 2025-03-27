@@ -14,6 +14,7 @@ import {
 import { ActivityItem, useActivityContext } from "../../context/ActivityContext";
 import { useGoalContext } from "../../context/GoalContext";
 import { categoryColors} from "../../data/categories"; // Import category colors and helper function
+import Header from "../general/Header";
 
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
@@ -142,71 +143,83 @@ const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGo
     };
   
     return (
-      <div className="p-4 bg-white shadow-lg rounded-lg grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-10 md:gap-10">
-        {/* Responsive Chart Heights */}
-        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-          <h2 className="text-xl font-semibold mb-4">Category Trends</h2>
-          <Line
-            data={{
-              labels: dates,
-              datasets: categoryDataset,
-            }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { position: "top" },
-                title: { display: true, text: "Carbon Footprint by Category Over Time" },
-              },
-            }}
-          />
-        </div>
+      <div className="p-6 bg-gray-100 min-h-screen">
+        {/* Header */}
+        <Header>Carbon Footprint Dashboard</Header>
   
-        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-          <h2 className="text-xl font-semibold mb-4">Category Distribution (Selected Date)</h2>
-          <Pie
-            data={pieChartData}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { position: "top" },
-                title: { display: true, text: `Carbon Footprint Distribution for ${selectedDate}` },
-              },
-            }}
-          />
-        </div>
+        <p className="text-gray-700 mb-6">
+          Analyze trends in your carbon footprint over time and review category-specific data to make eco-conscious decisions.
+        </p>
   
-        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
-          <h2 className="text-xl font-semibold mb-4">Overall Trend</h2>
-          <Line
-            data={{
-              labels: dates,
-              datasets: [overallDataset],
-            }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { position: "top" },
-                title: { display: true, text: "Overall Carbon Footprint Over Time" },
-              },
-            }}
-          />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-10 md:gap-10">
+          {/* Category Trends */}
+          <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
+            <h2 className="text-xl font-semibold mb-4">Category Trends</h2>
+            <Line
+              data={{
+                labels: dates,
+                datasets: categoryDataset,
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { position: "top" },
+                  title: { display: true, text: "Carbon Footprint by Category Over Time" },
+                },
+              }}
+            />
+          </div>
   
-        <div className="h-[50vh] md:h-[40vh] lg:h-[30vh] overflow-auto">
-          <h2 className="text-xl font-semibold mb-4">Summary View</h2>
-          <div className="text-gray-700">
-            <p>
-              <strong>Total Dates Tracked:</strong> {dates.length}
-            </p>
-            <p>
-              <strong>Selected Date:</strong> {selectedDate}
-            </p>
-            <p>
-              <strong>Overall Footprint:</strong> {overallData[dates.indexOf(selectedDate)] || 0} kg CO₂
-            </p>
+          {/* Category Distribution */}
+          <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
+            <h2 className="text-xl font-semibold mb-4">Category Distribution (Selected Date)</h2>
+            <Pie
+              data={pieChartData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { position: "top" },
+                  title: { display: true, text: `Carbon Footprint Distribution for ${selectedDate}` },
+                },
+              }}
+            />
+          </div>
+  
+          {/* Overall Trend */}
+          <div className="h-[50vh] md:h-[40vh] lg:h-[30vh]">
+            <h2 className="text-xl font-semibold mb-4">Overall Trend</h2>
+            <Line
+              data={{
+                labels: dates,
+                datasets: [overallDataset],
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { position: "top" },
+                  title: { display: true, text: "Overall Carbon Footprint Over Time" },
+                },
+              }}
+            />
+          </div>
+  
+          {/* Summary View */}
+          <div className="h-[50vh] md:h-[40vh] lg:h-[30vh] overflow-auto">
+            <h2 className="text-xl font-semibold mb-4">Summary View</h2>
+            <div className="text-gray-700">
+              <p>
+                <strong>Total Dates Tracked:</strong> {dates.length}
+              </p>
+              <p>
+                <strong>Selected Date:</strong> {selectedDate}
+              </p>
+              <p>
+                <strong>Overall Footprint:</strong> {overallData[dates.indexOf(selectedDate)] || 0} kg CO₂
+              </p>
+            </div>
           </div>
         </div>
       </div>
