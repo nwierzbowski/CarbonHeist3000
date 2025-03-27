@@ -6,11 +6,13 @@ import { ReactNode } from "react";
 import Dashboard from "./components/pages/Dashboard";
 import { Goals } from "./components/pages/Goals";
 import { GoalProvider } from "./context/GoalContext";
+import { CarbonFootprintDashboard } from "./components/pages/CarbonFootPrintDashboard";
 
 export type Nav = { link: string; name: string; page: ReactNode };
 
 const directory = [
   { link: "/", name: "Dashboard", page: <Dashboard /> },
+  { link: '/charts', name: 'Charts', page: <CarbonFootprintDashboard /> },
   { link: "/resources", name: "Resources", page: <Resources /> },
   { link: '/goals', name: 'Set Goals', page: <Goals /> },
 ];
