@@ -4,17 +4,17 @@ import Navbar from "./components/navbar/Navbar";
 import { ActivityProvider } from "./context/ActivityContext";
 import { ReactNode } from "react";
 import Dashboard from "./components/pages/Dashboard";
+import { Goals } from "./components/pages/Goals";
 
 export type Nav = { link: string; name: string; page: ReactNode };
 
 const directory = [
   { link: "/", name: "Dashboard", page: <Dashboard /> },
   { link: "/resources", name: "Resources", page: <Resources /> },
+  { link: '/goals', name: 'Set Goals', page: <Goals /> },
 ];
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <ActivityProvider>
       <BrowserRouter>

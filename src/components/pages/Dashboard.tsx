@@ -10,7 +10,7 @@ export default function Dashboard() {
     <div className="flex justify-between">
       {/* Left div takes half the screen */}
       <div className="flex flex-col w-1/2 p-4 items-center">
-        <Header>Activity Log</Header>
+        <Header>Daily Activity Log</Header>
         <DropdownSearch options={options}></DropdownSearch>
         <DateSelector />
         <ActivityLog></ActivityLog>
@@ -18,7 +18,7 @@ export default function Dashboard() {
 
       {/* Right div takes half the screen */}
       <div className="flex flex-col w-1/2 items-center">
-        <Header>Activity Summary</Header>
+        <Header>Daily Activity Summary</Header>
         <ActivitySummary></ActivitySummary>
       </div>
     </div>
