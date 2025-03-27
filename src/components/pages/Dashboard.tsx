@@ -12,7 +12,6 @@ export default function Dashboard() {
       <div className="flex flex-col w-1/2 p-4 items-center">
         <Header>Daily Activity Log</Header>
         <DropdownSearch options={options}></DropdownSearch>
-        <DateSelector />
         <ActivityLog></ActivityLog>
       </div>
 

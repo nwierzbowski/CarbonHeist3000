@@ -23,7 +23,7 @@ const DateSelector: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
+    <div >
       <div className="flex items-center gap-2">
         {/* Left carat as decrement button */}
         <button

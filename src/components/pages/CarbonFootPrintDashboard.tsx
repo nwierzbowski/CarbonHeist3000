@@ -18,51 +18,54 @@ import { categoryColors} from "../../data/categories"; // Import category colors
 // Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 
-// Helper function to extract data for the charts
+// Helper function to extract data for the charts with sorted dates
 const extractChartData = (activities: Record<string, ActivityItem[]>, categoryGoals: Record<string, number>) => {
-  const dates = Object.keys(activities); // Get all dates from activities
-  const categoryData: Record<string, number[]> = {};
-
-  // Extract category trends over time
-  dates.forEach((date) => {
-    const dailyActivities = activities[date];
-    const dailyCategoryTotals: Record<string, number> = {};
-
-    // Sum carbon values by category for the date
-    dailyActivities.forEach((activity) => {
-      const category = activity.category;
-      const carbonValue = parseFloat(activity.carbon_value) * activity.amount;
-      if (!isNaN(carbonValue)) {
-        dailyCategoryTotals[category] = (dailyCategoryTotals[category] || 0) + carbonValue;
-      }
-    });
-
-    // Push totals to category data arrays
+    const dates = Object.keys(activities).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); // Sort dates chronologically
+    const categoryData: Record<string, number[]> = {};
+  
+    // Initialize category data arrays based on category goals
     Object.keys(categoryGoals).forEach((category) => {
-      if (!categoryData[category]) {
-        categoryData[category] = [];
-      }
-      categoryData[category].push(dailyCategoryTotals[category] || 0);
+      categoryData[category] = [];
     });
-  });
-
-  // Calculate overall totals per day
-  const overallData = dates.map((date) => {
-    const dailyActivities = activities[date];
-    return dailyActivities.reduce((sum, activity) => {
-      const carbonValue = parseFloat(activity.carbon_value) * activity.amount;
-      return sum + (isNaN(carbonValue) ? 0 : carbonValue);
-    }, 0);
-  });
-
-  return { dates, categoryData, overallData };
-};
+  
+    // Extract category trends over time
+    dates.forEach((date) => {
+      const dailyActivities = activities[date] || [];
+      const dailyCategoryTotals: Record<string, number> = {};
+  
+      // Sum carbon values by category for the current date
+      dailyActivities.forEach((activity) => {
+        const category = activity.category;
+        const carbonValue = parseFloat(activity.carbon_value) * activity.amount;
+        if (!isNaN(carbonValue)) {
+          dailyCategoryTotals[category] = (dailyCategoryTotals[category] || 0) + carbonValue;
+        }
+      });
+  
+      // Push totals to category data arrays in chronological order
+      Object.keys(categoryGoals).forEach((category) => {
+        categoryData[category].push(dailyCategoryTotals[category] || 0); // Default to 0 if no data for the category
+      });
+    });
+  
+    // Calculate overall totals per day in chronological order
+    const overallData = dates.map((date) => {
+      const dailyActivities = activities[date] || [];
+      return dailyActivities.reduce((sum, activity) => {
+        const carbonValue = parseFloat(activity.carbon_value) * activity.amount;
+        return sum + (isNaN(carbonValue) ? 0 : carbonValue);
+      }, 0);
+    });
+  
+    return { dates, categoryData, overallData };
+  };
+  
 
 export const CarbonFootprintDashboard: React.FC = () => {
     const { activities, selectedDate } = useActivityContext();
     const { categoryGoals } = useGoalContext();
   
-    // Extract data for visualization
+    // Extract and sort data for visualization
     const { dates, categoryData, overallData } = extractChartData(activities, categoryGoals);
   
     // Map Tailwind classes to actual hex values for accurate chart rendering
