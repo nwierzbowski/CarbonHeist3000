@@ -1,40 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useActivityContext } from "../../context/ActivityContext";
-import { calculateCarbonByCategory } from "../dashboard/ActivitySummary";
-import { categoryColors } from "../../data/categories";
-// import { calculateCarbonByCategory } from "../../utils/calculateCarbonByCategory";
+import { useGoalContext } from "../../context/GoalContext"; // Import GoalContext
+import { calculateCarbonByCategory } from "../dashboard/ActivitySummary"; // Assuming this is imported correctly
+import { categoryColors } from "../../data/categories"; // Assuming category colors are defined here
 
-const categories = categoryColors.map(val => val.category); // Add your own categories
+const categories = categoryColors.map((val) => val.category); // Generate categories dynamically
 
 export const Goals: React.FC = () => {
   const { activities, selectedDate } = useActivityContext();
-
-  // State for goals and progress
-  const [categoryGoals, setCategoryGoals] = useState<Record<string, number>>(
-    categories.reduce((acc, category) => {
-      acc[category] = 0; // Initialize goals for each category to 0
-      return acc;
-    }, {} as Record<string, number>)
-  );
-
-  const [overallGoal, setOverallGoal] = useState<number>(0); // Total daily goal
-  const [feedback, setFeedback] = useState<string>(""); // Motivational feedback
+  const { categoryGoals, overallGoal, setCategoryGoal, setOverallGoal } = useGoalContext(); // Use GoalContext
 
   // Calculate progress dynamically
   const progressByCategory = calculateCarbonByCategory(activities, categories, selectedDate);
   const overallProgress = Object.values(progressByCategory).reduce((sum, value) => sum + value, 0);
-
-  // Handle goal updates
-  const handleCategoryGoalChange = (category: string, goal: number) => {
-    setCategoryGoals((prev) => ({
-      ...prev,
-      [category]: goal,
-    }));
-  };
-
-  const handleOverallGoalChange = (goal: number) => {
-    setOverallGoal(goal);
-  };
 
   // Generate feedback dynamically
   const getMotivationalFeedback = () => {
@@ -51,10 +29,7 @@ export const Goals: React.FC = () => {
     }
   };
 
-  // Update feedback on progress
-  React.useEffect(() => {
-    setFeedback(getMotivationalFeedback());
-  }, [overallProgress, overallGoal]);
+  const feedback = getMotivationalFeedback();
 
   return (
     <div className="max-w-lg mx-auto p-4 border rounded-md shadow-lg">
@@ -69,8 +44,8 @@ export const Goals: React.FC = () => {
             <input
               type="number"
               min="0"
-              value={categoryGoals[category]}
-              onChange={(e) => handleCategoryGoalChange(category, Number(e.target.value))}
+              value={categoryGoals[category] || 0} // Default to 0 if not set
+              onChange={(e) => setCategoryGoal(category, Number(e.target.value))} // Update goal using context
               className="w-24 p-1 border rounded-md"
               placeholder="e.g., 5"
             />
@@ -83,8 +58,8 @@ export const Goals: React.FC = () => {
         <input
           type="number"
           min="0"
-          value={overallGoal}
-          onChange={(e) => handleOverallGoalChange(Number(e.target.value))}
+          value={overallGoal} // Access overall goal from context
+          onChange={(e) => setOverallGoal(Number(e.target.value))} // Update overall goal using context
           className="w-full p-2 border rounded-md"
           placeholder="Set your overall daily goal (e.g., 20 kg CO₂)"
         />

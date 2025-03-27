@@ -5,6 +5,7 @@ import { ActivityProvider } from "./context/ActivityContext";
 import { ReactNode } from "react";
 import Dashboard from "./components/pages/Dashboard";
 import { Goals } from "./components/pages/Goals";
+import { GoalProvider } from "./context/GoalContext";
 
 export type Nav = { link: string; name: string; page: ReactNode };
 
@@ -17,6 +18,7 @@ const directory = [
 function App() {
   return (
     <ActivityProvider>
+      <GoalProvider>
       <BrowserRouter>
         <Navbar links={directory}>CarbonHeist 3000</Navbar>
         <div className="pt-16">
@@ -27,6 +29,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      </GoalProvider>
     </ActivityProvider>
   );
 }
